@@ -1,0 +1,16 @@
+.App{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+
+.view{
+  width: 100%;
+  padding: var(--padding);
+  background-color: var(--main-bg);
+}
+
+.view h1{
+  margin-top: 0;
+  font-size: var(--font-size-big);
+}
