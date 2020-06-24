@@ -40,6 +40,11 @@ interface MaterialCalculatorDB extends DBSchema {
 }
 
 async function getDB() {
+  if (!('indexedDB' in window)) {
+    console.log('This browser doesn\'t support IndexedDB');
+    return;
+  }
+
   return openDB<MaterialCalculatorDB>('MaterialCalculator', 1, {
     upgrade(db) {
       const products = db.createObjectStore('products', {
