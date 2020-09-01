@@ -1,51 +1,9 @@
-import { openDB, DBSchema } from 'idb';
+import { openDB } from 'idb';
 
-interface Part {
-    name: string;
-    size: number;
-}
+import { IMaterialCalculatorDB } from './interfaces/db';
 
-interface Sizes {
-    size: number | string;
-    parts: Array<Part>
-}
-
-interface MaterialCalculatorDB extends DBSchema {
-    products: {
-        value: {
-            id?: number;
-            name: string;
-            parts: Array<string>;
-            sizes: Array<Sizes>;
-        };
-        key: number;
-        indexes: { 'name': string };
-    };
-    materials: {
-        value: {
-            id?: number;
-            name: string;
-            manufacturer: string;
-            width: number;
-            fLength: number;
-            price: number;
-        };
-        key: number;
-        indexes: { 'manufacturer': string };
-    };
-    'settings': {
-        key: string;
-        value: any;
-    };
-}
-
-async function getDB() {
-  if (!('indexedDB' in window)) {
-    console.log('This browser doesn\'t support IndexedDB');
-    return;
-  }
-
-  return openDB<MaterialCalculatorDB>('MaterialCalculator', 1, {
+export default async function () {
+  return openDB<IMaterialCalculatorDB>('MaterialCalculator', 1, {
     upgrade(db) {
       const products = db.createObjectStore('products', {
         keyPath: 'id',
@@ -63,5 +21,3 @@ async function getDB() {
     },
   });
 }
-
-export default getDB;

@@ -1,0 +1,14 @@
+.card{
+    background-color: var(--bright-bg);
+    box-shadow: var(--elevation-1);
+    border-radius: var(--radius);
+    margin-bottom: var(--margin);
+}
+
+.card__body{
+    padding: var(--padding);
+}
+
+.card__body--with-border{
+    border-bottom: 1px solid #f2f2f2;
+}

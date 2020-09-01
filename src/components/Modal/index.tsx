@@ -1,18 +1,25 @@
 import React, {
-  ReactNode, ReactElement, useRef, MouseEvent,
+  ReactElement, useRef, MouseEvent, JSXElementConstructor,
 } from 'react';
 
 import styles from './Modal.module.css';
 
-interface IModal {
-    open: boolean;
-    children?: ReactNode,
-    close: () => void;
+interface IComponent {
+  [key: string]: JSXElementConstructor<{openOrCloseModal: () => void}>
 }
+interface IModal {
+    components: IComponent,
+    currentComponent: string,
+    close: () => void,
+  }
 
-function Modal({ open, children, close }: IModal): ReactElement|null {
+function Modal({ currentComponent = '', components, close }: IModal): ReactElement|null {
+  if (typeof currentComponent !== 'string' || currentComponent === '' || !components.hasOwnProperty(currentComponent)) return null;
+
+  const CurrentModalComponent = components[currentComponent];
+
+  // eslint-disable-next-line
   const notClickable = useRef<HTMLDivElement|null>(null);
-  if (!open) return null;
 
   const handleClose = (event: MouseEvent<HTMLDivElement>) => {
     if (notClickable && notClickable.current) {
@@ -24,7 +31,7 @@ function Modal({ open, children, close }: IModal): ReactElement|null {
     // eslint-disable-next-line
     <div className={styles.modal} onClick={handleClose}>
       <div className={styles.container} ref={notClickable}>
-        {children}
+        <CurrentModalComponent openOrCloseModal={close} />
       </div>
     </div>
   );

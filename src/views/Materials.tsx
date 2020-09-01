@@ -1,110 +1,119 @@
-import React, {
-  useState, useEffect, ChangeEvent, FormEvent,
-} from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus, faMoneyBill, faRulerHorizontal, faRulerVertical, faEdit, faTrash, faShoppingCart,
+} from '@fortawesome/free-solid-svg-icons';
 
-import db from '../idb';
+import { deleteDBItem, updateDBItem } from '../store/actions/asyncActions';
+import { deleteMaterial, updateMaterial } from '../store/actions/materials';
+import { resetForm, updateFrom } from '../store/actions/forms';
+import { IMaterial } from '../interfaces/material';
+import { RootState, IMaterialState } from '../interfaces/state';
+import { useDB } from '../hooks/useGetDB';
 
-import Modal from '../components/Modal';
 import Button from '../components/Button';
+import IconLabel from '../components/IconLabel';
+import { CardWithTitle } from '../components/Card';
 
-interface IMaterial {
-      id?: number;
-      name: string;
-      manufacturer: string;
-      width: number;
-      fLength: number;
-      price: number;
-  }
+const mapStateToMaterialProps = (state: RootState) => ({
+  deleteCurrentMaterial: state.forms.deleteCurrent,
+});
+const mapDispatchToMaterialProps = (dispatch: any) => ({
+  deleteMaterial: (keys: number[]) => dispatch(deleteDBItem('materials', keys, deleteMaterial)),
+  updateMaterial: (id: number, value: IMaterial) => dispatch(updateDBItem('materials', id, value, updateMaterial)),
+  updateMaterialForm: (value: IMaterial) => dispatch(updateFrom('currMaterial', value)),
+  resetDeleteConfirm: () => dispatch(resetForm('deleteCurrent')),
+});
 
-function Materials() {
-  const [materials, setMaterials] = useState<Array<IMaterial>>([]);
-  const [newMaterial, setNewMaterial] = useState<IMaterial|null>(null);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+type reduxProps =
+  ReturnType<typeof mapDispatchToMaterialProps>&ReturnType<typeof mapStateToMaterialProps>;
+interface IMaterialProps {
+  material: IMaterial,
+  openOrCloseModal: (modalComponent?: string) => void,
+}
 
-  const getMaterials = async (): Promise<IMaterial[]> => (await db()).getAll('materials');
-  const handleOpen = (): void => setModalOpen(true);
-  const handleClose = (): void => setModalOpen(false);
-  const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string, isInt = false) => {
-    // @ts-ignore
-    setNewMaterial({ ...newMaterial, [field]: isInt ? +e.target.value : e.target.value });
+const Material = connect(mapStateToMaterialProps, mapDispatchToMaterialProps)(({
+  material,
+  deleteCurrentMaterial,
+  /* eslint-disable */ deleteMaterial /* eslint-enable */,
+  openOrCloseModal,
+  resetDeleteConfirm,
+  updateMaterialForm,
+}: IMaterialProps & reduxProps) => {
+  const {
+    id, name, manufacturer, width, fLength, price,
+  } = material;
+
+  const editHandler = (): void => {
+    if (!id) return;
+
+    updateMaterialForm(material);
+    openOrCloseModal('materials');
   };
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // @ts-ignore
-    await (await db()).add('materials', newMaterial);
-    // @ts-ignore
-    setNewMaterial(null);
-    handleClose();
+  const deleteHandler = (): void => {
+    if (!id) return;
+
+    openOrCloseModal('deleteConfirm');
+    if (deleteCurrentMaterial) deleteMaterial([id]);
+    openOrCloseModal();
+    resetDeleteConfirm();
   };
 
-  useEffect(() => {
-    if (!newMaterial) {
-      const getData = async () => {
-        const res = await getMaterials();
-        setMaterials(res);
-      };
+  const calculatedPrice = (price / ((width / 100) * (fLength / 100))).toFixed(2);
 
-      getData();
-    }
-  }, [newMaterial]);
+  const leftChildren = [
+    <IconLabel label={`${width}cm`} icon={faRulerVertical} />,
+    <IconLabel label={`${fLength}cm`} icon={faRulerHorizontal} />,
+    <IconLabel label={`${price.toFixed(2)}€`} icon={faShoppingCart} />,
+    <IconLabel label={`${calculatedPrice}€/m²`} icon={faMoneyBill} />,
+  ];
+  const rightChildren = [
+    <FontAwesomeIcon icon={faEdit} onClick={editHandler} />,
+    <FontAwesomeIcon icon={faTrash} onClick={deleteHandler} />,
+  ];
+
+  return (
+    <CardWithTitle
+      title={name}
+      subTitle={manufacturer}
+      leftChildren={leftChildren}
+      rightChildren={rightChildren}
+    />
+  );
+});
+
+const mapStateToProps = (state: RootState) => ({
+  materials: state.materials,
+});
+
+interface IMaterialsProps {
+  materials: IMaterialState
+  openOrCloseModal: (modalComponent?: string) => void
+}
+
+type reduxMaterialsProps = ReturnType<typeof mapStateToProps>
+
+function Materials({ materials, openOrCloseModal }: IMaterialsProps & reduxMaterialsProps) {
+  useDB('materials');
+
+  const openModalMaterials = (): void => openOrCloseModal('materials');
 
   return (
     <>
       <h1>Materials</h1>
-      <ul>
-        {materials.map((ele) => <li key={ele.id}>{JSON.stringify(ele)}</li>)}
-      </ul>
-      <Button onClick={handleOpen}><FontAwesomeIcon icon={faPlus} /></Button>
-      <Modal open={modalOpen} close={handleClose}>
-        <form onSubmit={handleSubmit}>
-          <input type="hidden" name="id" value={newMaterial?.id ?? ''} />
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            required
-            value={newMaterial?.name ?? ''}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'name')}
+      {[...materials.entries()].map(
+        ([id, material]) => (
+          <Material
+            key={id}
+            material={material}
+            openOrCloseModal={openOrCloseModal}
           />
-          <input
-            type="text"
-            name="manufacturer"
-            placeholder="Hersteller"
-            required
-            value={newMaterial?.manufacturer ?? ''}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'manufacturer')}
-          />
-          <input
-            type="number"
-            name="length"
-            placeholder="Länge"
-            required
-            value={newMaterial?.fLength ?? ''}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'fLength', true)}
-          />
-          <input
-            type="number"
-            name="width"
-            placeholder="Breite"
-            required
-            value={newMaterial?.width ?? ''}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'width', true)}
-          />
-          <input
-            type="number"
-            name="price"
-            placeholder="Preis"
-            required
-            value={newMaterial?.price ?? ''}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'price', true)}
-          />
-          <button type="submit">Submit</button>
-        </form>
-      </Modal>
+        ),
+      )}
+      <Button onClick={openModalMaterials}><FontAwesomeIcon icon={faPlus} /></Button>
     </>
   );
 }
 
-export default Materials;
+export default connect(mapStateToProps)(Materials);

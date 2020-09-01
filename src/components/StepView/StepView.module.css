@@ -1,0 +1,48 @@
+.progressbar{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--padding);
+    box-sizing: border-box;
+}
+
+.progressbar__bar{
+    width: 100px;
+    height: 3px;
+    background-color: #f2f2f2;
+    align-self: start;
+    margin-top: 25px;
+}
+
+.progressbar__bar--done{
+    background: var(--gradient-bg);
+}
+
+.progressbar__item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.progressbar__number{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border: 3px solid #f2f2f2;
+    border-radius: 999999rem;
+}
+
+.progressbar__item--current .progressbar__number{
+    border-color: var(--gradient-accent);
+    color: var(--gradient-accent);
+}
+
+.progressbar__item--done .progressbar__number{
+    border: 0px;
+    background: var(--gradient-bg);
+    color: var(--gradient-text-color);
+}
