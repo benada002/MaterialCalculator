@@ -7,7 +7,7 @@ const initialState: IForm = {
   currProduct: {
     name: '',
     parts: [],
-    sizes: new Map(),
+    sizes: {},
   },
   currMaterial: {
     name: '',
@@ -34,7 +34,15 @@ export default function (state = initialState, action: FormActionTypes) {
         [action.key]: {
           // @ts-ignore
           ...state[action.key],
-          ...action.value,
+          ...Object.entries(action.value).map(([key, value]) => {
+            // @ts-ignore
+            if(typeof state[action.key][key] === 'object' && state[action.key][key] !== null && !Array.isArray(state[action.key][key])) {
+              // @ts-ignore
+              return {[key]: {...state[action.key][key], ...value}}
+            }
+
+            return {[key]: value}
+          })[0],
         },
       };
       break;
@@ -42,7 +50,7 @@ export default function (state = initialState, action: FormActionTypes) {
       state = {
         ...state,
         // @ts-ignore
-        [action.key]: initialState[action.key],
+        [action.key]: initialState[action],
       };
       break;
   }
