@@ -8,7 +8,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-import ProductModal from 'src/views/Modals/ProductModal';
+import ProductModal from '../views/Modals/ProductModal';
 import Products from '../views/Products';
 import Materials from '../views/Materials';
 import Calculator from '../views/Calculator';
@@ -35,14 +35,15 @@ function App({ openOrCloseModal, currentModalComponent }: IAppProps) {
         <Sidebar />
         <motion.main className={styles.view}>
           <Switch>
-            <Redirect exact from="/" to="products" />
-            <Route path="/products" component={() => renderRoutesWithModalHandler(Products)} />
-            <Route path="/materials" component={() => renderRoutesWithModalHandler(Materials)} />
-            <Route path="/calculator" component={() => renderRoutesWithModalHandler(Calculator)} />
-            <Route path="/settings" component={() => renderRoutesWithModalHandler(Settings)} />
+            <Redirect exact from="/" to="/products" />
+            <Route path="/products/new" component={ProductModal} />
+            <Route path="/products" component={Products} />
+            <Route path="/materials/new" component={MaterialModal} />
+            <Route path="/materials" component={Materials} />
+            <Route path="/calculator" component={Calculator} />
+            <Route path="/settings" component={Settings} />
           </Switch>
         </motion.main>
-        <Modal close={openOrCloseModal} currentComponent={currentModalComponent} components={{ materials: MaterialModal, product: ProductModal }} />
       </div>
     </Router>
   );

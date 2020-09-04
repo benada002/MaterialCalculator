@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 
+import { Link, useHistory } from 'react-router-dom';
 import { updateProduct, deleteProduct } from '../store/actions/products';
 import { updateFrom, resetForm } from '../store/actions/forms';
 import Button from '../components/Button';
@@ -19,7 +20,7 @@ const mapStateToMaterialProps = (state: RootState) => ({
 const mapDispatchToMaterialProps = (dispatch: any) => ({
   deleteProduct: (keys: number[]) => dispatch(deleteDBItem('materials', keys, deleteProduct)),
   updateProduct: (id: number, value: IMaterial) => dispatch(updateDBItem('materials', id, value, updateProduct)),
-  updateProductForm: (value: IProduct) => dispatch(updateFrom('currMaterial', value)),
+  updateProductForm: (value: IProduct) => dispatch(updateFrom('currProduct', value)),
   resetDeleteConfirm: () => dispatch(resetForm('deleteCurrent')),
 });
 
@@ -39,13 +40,13 @@ const Product = connect(mapStateToMaterialProps, mapDispatchToMaterialProps)(({
   resetDeleteConfirm,
   updateProductForm,
 }: IProductProps & reduxProductProps) => {
+  const history = useHistory();
   const { id, name } = product;
 
   const editHandler = (): void => {
     if (!id) return;
-
     updateProductForm(product);
-    openOrCloseModal('product');
+    history.push('/products/new');
   };
   const deleteHandler = (): void => {
     if (!id) return;
@@ -89,7 +90,7 @@ function Products({ products, openOrCloseModal }: IProductsProps & reduxTypes) {
       {products && [...products.values()].map(
         (product) => <Product product={product} openOrCloseModal={openOrCloseModal} />,
       )}
-      <Button onClick={openModalProduct}><FontAwesomeIcon icon={faPlus} /></Button>
+      <Button><Link to="/products/new"><FontAwesomeIcon icon={faPlus} /></Link></Button>
     </>
   );
 }

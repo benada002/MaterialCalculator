@@ -5,6 +5,7 @@ import {
   faPlus, faMoneyBill, faRulerHorizontal, faRulerVertical, faEdit, faTrash, faShoppingCart,
 } from '@fortawesome/free-solid-svg-icons';
 
+import { NavLink, useHistory, Link } from 'react-router-dom';
 import { deleteDBItem, updateDBItem } from '../store/actions/asyncActions';
 import { deleteMaterial, updateMaterial } from '../store/actions/materials';
 import { resetForm, updateFrom } from '../store/actions/forms';
@@ -41,6 +42,8 @@ const Material = connect(mapStateToMaterialProps, mapDispatchToMaterialProps)(({
   resetDeleteConfirm,
   updateMaterialForm,
 }: IMaterialProps & reduxProps) => {
+  const history = useHistory();
+
   const {
     id, name, manufacturer, width, fLength, price,
   } = material;
@@ -49,7 +52,7 @@ const Material = connect(mapStateToMaterialProps, mapDispatchToMaterialProps)(({
     if (!id) return;
 
     updateMaterialForm(material);
-    openOrCloseModal('materials');
+    history.push('/materials/new');
   };
   const deleteHandler = (): void => {
     if (!id) return;
@@ -60,7 +63,7 @@ const Material = connect(mapStateToMaterialProps, mapDispatchToMaterialProps)(({
     resetDeleteConfirm();
   };
 
-  const calculatedPrice = (price / ((width / 100) * (fLength / 100))).toFixed(2);
+  const calculatedPrice = (price / ((width * fLength) / 100)).toFixed(2);
 
   const leftChildren = [
     <IconLabel label={`${width}cm`} icon={faRulerVertical} />,
@@ -111,7 +114,7 @@ function Materials({ materials, openOrCloseModal }: IMaterialsProps & reduxMater
           />
         ),
       )}
-      <Button onClick={openModalMaterials}><FontAwesomeIcon icon={faPlus} /></Button>
+      <Button><Link to="/materials/new"><FontAwesomeIcon icon={faPlus} /></Link></Button>
     </>
   );
 }
