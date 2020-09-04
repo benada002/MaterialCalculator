@@ -42,12 +42,7 @@ export const addDBItem = (
     const addedValue = await db.add(storeName, value);
 
     // @ts-ignore
-    const storeContent = new Map([...getState().materials.entries()]);
-    // @ts-ignore
-    storeContent.set(addedValue, value);
-
-    // @ts-ignore
-    dispatch(action(addedValue, storeContent));
+    dispatch(action(addedValue, value));
   } catch (error) {
     console.log(error);
   }

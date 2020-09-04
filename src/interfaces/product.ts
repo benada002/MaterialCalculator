@@ -1,6 +1,6 @@
-export type IPart = Map<string, number>;
+export type IPart = {[key: string]: {width: number, height: number}};
 
-export type ISize = Map<number, IPart>;
+export type ISize = {[key: number]: IPart};
 
 export interface IProduct {
     id?: number;

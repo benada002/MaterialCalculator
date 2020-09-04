@@ -6,8 +6,7 @@ import { IMaterialState } from '../../interfaces/state';
 export default function (state: IMaterialState = new Map(), action: MaterialActionTypes) {
   switch (action.type) {
     case ADD_MATERIAL:
-      state.set(action.id, action.material);
-      return new Map(state.entries());
+      return new Map(state).set(action.id, action.material);
     case UPDATE_MATERIAL:
       state.set(action.id, { ...state.get(action.id), ...action.material });
       return new Map(state.entries());

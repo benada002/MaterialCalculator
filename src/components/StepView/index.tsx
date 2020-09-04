@@ -1,11 +1,13 @@
 import React, { ReactNode, useState } from 'react';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Grid from '../Grid';
 
 import styles from './StepView.module.css';
 
 export interface IStep {
   name: string,
-  element: ReactNode
+  element: JSX.Element
 }
 
 interface IStepViewProps {
@@ -50,7 +52,7 @@ function StepView({ steps }: IStepViewProps) {
             return (
               <>
                 <div className={stepClasses}>
-                  <span className={styles.progressbar__number}>{i}</span>
+                  <span className={styles.progressbar__number}>{done ? <FontAwesomeIcon icon={faCheck} /> : i}</span>
                   <span className={styles.progressbar__name}>{name}</span>
                 </div>
                 {showBar && <span className={barClasses} />}
