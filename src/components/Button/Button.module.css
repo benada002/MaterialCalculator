@@ -1,4 +1,4 @@
-.button{
+.button, .button a{
     border: none;
     background: var(--gradient-bg);
     color: var(--gradient-text-color);
@@ -13,4 +13,5 @@
     position: fixed;
     bottom: var(--padding);
     right: var(--padding);
+    padding: 0;
 }
