@@ -29,20 +29,20 @@ export default function (state = initialState, action: FormActionTypes) {
   /* eslint-disable */
   switch (action.type) {
     case UPDATE_FORM:
+      Object.entries(action.value).forEach(([key, value]) => {
+        // @ts-ignore
+        if (typeof state[action.key][key] === 'object' && state[action.key][key] !== null && !Array.isArray(state[action.key][key])) {
+          // @ts-ignore
+          action.value[key] = { ...state[action.key][key], ...value };
+        }
+      });
+
       state = {
         ...state,
         [action.key]: {
           // @ts-ignore
           ...state[action.key],
-          ...Object.entries(action.value).map(([key, value]) => {
-            // @ts-ignore
-            if(typeof state[action.key][key] === 'object' && state[action.key][key] !== null && !Array.isArray(state[action.key][key])) {
-              // @ts-ignore
-              return {[key]: {...state[action.key][key], ...value}}
-            }
-
-            return {[key]: value}
-          })[0],
+          ...action.value,
         },
       };
       break;
