@@ -5,7 +5,7 @@ import {
   faPlus, faMoneyBill, faRulerHorizontal, faRulerVertical, faEdit, faTrash, faShoppingCart,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { NavLink, useHistory, Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { deleteDBItem, updateDBItem } from '../store/actions/asyncActions';
 import { deleteMaterial, updateMaterial } from '../store/actions/materials';
 import { resetForm, updateFrom } from '../store/actions/forms';

@@ -27,8 +27,6 @@ interface IAppProps {
 }
 
 function App({ openOrCloseModal, currentModalComponent }: IAppProps) {
-  const renderRoutesWithModalHandler = (Component: JSXElementConstructor<any>): ReactElement => <Component openOrCloseModal={openOrCloseModal} />;
-
   return (
     <Router>
       <div className={styles.App}>

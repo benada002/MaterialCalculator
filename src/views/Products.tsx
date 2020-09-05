@@ -83,7 +83,7 @@ type reduxTypes = ReturnType<typeof mapStateToProps>
 
 function Products({ products, openOrCloseModal }: IProductsProps & reduxTypes) {
   useDB('products');
-  const openModalProduct = (): void => openOrCloseModal('product');
+
   return (
     <>
       <h1>Products</h1>

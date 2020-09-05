@@ -1,7 +1,6 @@
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Grid from '../Grid';
 
 import styles from './StepView.module.css';
 
@@ -61,7 +60,6 @@ function StepView({ steps }: IStepViewProps) {
           },
         )}
       </div>
-      ,
       <div className={styles.view}>{element}</div>
       <div className={styles.buttons}>
         <button type="button" disabled={showBackButton} className={`${styles.button} ${styles['button--back']}`} onClick={stepDecrement}>Zurück</button>

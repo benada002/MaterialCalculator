@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import StepView, { IStep } from 'src/components/StepView';
 import { useHistory } from 'react-router-dom';
+import { CardWithTitle } from 'src/components/Card';
 import { addProduct, updateProduct } from '../../store/actions/products';
 import { addDBItem, updateDBItem } from '../../store/actions/asyncActions';
 import { IFormValues } from '../../interfaces/form';
@@ -36,8 +37,9 @@ function ProductModal(
     openOrCloseModal, currentProduct, updateProductForm, resetProductForm, addItem, updateItem, currentModal,
   }: IProductModal & reduxProps,
 ) {
+  console.log(currentProduct);
   useEffect(() => () => resetProductForm(), [currentModal, resetProductForm]);
-  const [currPartIndex, setCurrPartIndex] = useState(0);
+  const [currPartIndex, setCurrPartIndex] = useState(currentProduct.parts.length ?? 0);
   const history = useHistory();
 
   const close = () => history.goBack();
@@ -91,7 +93,7 @@ function ProductModal(
 
     return (
       <>
-        {currentProduct.parts && currentProduct.parts.map((ele, i) => ((i < currPartIndex) ? (<div>{ele}</div>) : null))}
+        {currentProduct.parts && currentProduct.parts.map((ele, i) => ((i < currPartIndex) ? (<CardWithTitle title={ele} />) : null))}
         {inputVisible ? (
           <>
             <input
@@ -128,7 +130,6 @@ function ProductModal(
 
         // @ts-ignore
         if (currentProduct.parts.indexOf(part) !== -1) {
-          console.log(part, measure);
           // @ts-ignore
           values[part] = values[part] ?? {};
           // @ts-ignore
@@ -147,7 +148,7 @@ function ProductModal(
         {
           currentProduct.sizes
           // @ts-ignore
-          && Object.entries(currentProduct.sizes).map(([key]) => <div>{key}</div>)
+          && Object.entries(currentProduct.sizes).map(([key]) => <CardWithTitle title={key} />)
         }
         {inputVisible ? (
           <form onSubmit={handleSizeSubmit}>
@@ -171,7 +172,6 @@ function ProductModal(
       </>
     );
   };
-
   const steps: IStep[] = [
     {
       name: 'Name',

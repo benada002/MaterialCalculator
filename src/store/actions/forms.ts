@@ -1,4 +1,4 @@
-import { FormActionTypes, RESET_FORM, UPDATE_FORM } from 'src/interfaces/formActions';
+import { FormActionTypes, RESET_FORM, UPDATE_FORM } from '../../interfaces/formActions';
 import { IFormValues } from '../../interfaces/form';
 
 export const resetForm = (key: string): FormActionTypes => ({

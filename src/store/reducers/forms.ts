@@ -29,7 +29,10 @@ export default function (state = initialState, action: FormActionTypes) {
   /* eslint-disable */
   switch (action.type) {
     case UPDATE_FORM:
+      console.log(action)
       Object.entries(action.value).forEach(([key, value]) => {
+        // @ts-ignore
+        if(!state[action.key]) return;
         // @ts-ignore
         if (typeof state[action.key][key] === 'object' && state[action.key][key] !== null && !Array.isArray(state[action.key][key])) {
           // @ts-ignore

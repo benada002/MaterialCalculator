@@ -9,7 +9,7 @@ import StepView from '../components/StepView';
 import { IProduct } from '../interfaces/product';
 
 interface IChooseProduct {
-  currProduct: IProduct|{},
+  currProduct?: IProduct,
   products: IProductState,
   setCurrProduct: (product: IProduct) => void
 }
@@ -29,7 +29,7 @@ function ChooseProduct({ currProduct, products, setCurrProduct }:IChooseProduct)
 }
 
 interface IMatchPartToMaterial {
-  currProduct: IProduct|{},
+  currProduct?: IProduct,
   currMaterials: IMaterial[],
   materials: IMaterialState,
   setMaterial: (material: IMaterial, i?: number) => void
@@ -75,17 +75,18 @@ function MatchPartToMaterial({
 }
 
 interface ISum {
-  currProduct: IProduct|{},
+  currProduct?: IProduct,
   currMaterials: IMaterial[],
 }
 
 function Sum({
   currProduct, currMaterials,
 }: ISum) {
+  if (!currProduct || !currMaterials) return null;
   console.log(currProduct, currMaterials);
   return (
     <>
-      <h2>Ergebniss</h2>
+      <h2>Ergebnis</h2>
       {
         // @ts-ignore
         currProduct.sizes && Object.entries(currProduct.sizes).map(
@@ -97,17 +98,17 @@ function Sum({
               <Card>
                 {[
                   <CardBody>
-                    <p>{size}</p>
+                    <p>
+                      Größe:
+                      {' '}
+                      {size}
+                    </p>
                     <div>
                       {
                       // @ts-ignore
                     currProduct.parts && currProduct.parts.map((part) => {
-                      const currSum = (currMaterials[i].price
-                        / ((currMaterials[i].width * currMaterials[i].fLength) / 100))
-                        // @ts-ignore
-                        * (((currProduct.sizes[size][part].height
-                        // @ts-ignore
-                        * currProduct.sizes[size][part].width) / 100));
+                      const currSum = (currMaterials[i].price / ((currMaterials[i].width * currMaterials[i].fLength) / 100))
+                        * ((currProduct.sizes[size as any][part].height * currProduct.sizes[size as any][part].width) / 100);
 
                       sum += currSum;
                       return (
@@ -151,7 +152,7 @@ type ICalculatorProps = ReturnType<typeof mapStateToProps>
 function Calculator({ products, materials } :ICalculatorProps) {
   useDB('products');
   useDB('materials');
-  const [currProduct, setCurrProduct] = useState({});
+  const [currProduct, setCurrProduct] = useState<IProduct>();
   const [currMaterials, setCurrMaterials] = useState<IMaterial[]>([]);
 
   const setMaterial = (material: IMaterial, i?: number) => {
