@@ -18,13 +18,19 @@ import Sidebar from '../components/Sidebar';
 import Modal from '../components/Modal';
 import { RootState } from '../interfaces/state';
 import { updateUiModal } from '../store/actions/ui';
+import { modalComponents, IModalComponentKeys } from '../modal';
 
 import styles from './App.module.css';
 
-interface IAppProps {
-  currentModalComponent: string,
-  openOrCloseModal: (modalComponent?: string) => void
-}
+const mapStateToProps = (state: RootState) => ({
+  currentModalComponent: state.ui.currentModalComponent,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  openOrCloseModal: (modalCompontent?: IModalComponentKeys): void => dispatch(updateUiModal(modalCompontent)),
+});
+
+type IAppProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 function App({ openOrCloseModal, currentModalComponent }: IAppProps) {
   return (
@@ -42,17 +48,10 @@ function App({ openOrCloseModal, currentModalComponent }: IAppProps) {
             <Route path="/settings" component={Settings} />
           </Switch>
         </motion.main>
+        <Modal currentComponent={currentModalComponent} close={openOrCloseModal} components={modalComponents} />
       </div>
     </Router>
   );
 }
-
-const mapStateToProps = (state: RootState) => ({
-  currentModalComponent: state.ui.currentModalComponent,
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-  openOrCloseModal: (modalCompontent = ''): void => dispatch(updateUiModal(modalCompontent)),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

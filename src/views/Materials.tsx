@@ -6,20 +6,20 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { useHistory, Link } from 'react-router-dom';
+import { updateUiModal } from '../store/actions/ui';
 import { deleteDBItem, updateDBItem } from '../store/actions/asyncActions';
 import { deleteMaterial, updateMaterial } from '../store/actions/materials';
 import { resetForm, updateFrom } from '../store/actions/forms';
 import { IMaterial } from '../interfaces/material';
 import { RootState, IMaterialState } from '../interfaces/state';
 import { useDB } from '../hooks/useGetDB';
+import deletePromise from '../deletePromise';
 
 import Button from '../components/Button';
 import IconLabel from '../components/IconLabel';
 import { CardWithTitle } from '../components/Card';
+import { IModalComponentKeys } from '../modal';
 
-const mapStateToMaterialProps = (state: RootState) => ({
-  deleteCurrentMaterial: state.forms.deleteCurrent,
-});
 const mapDispatchToMaterialProps = (dispatch: any) => ({
   deleteMaterial: (keys: number[]) => dispatch(deleteDBItem('materials', keys, deleteMaterial)),
   updateMaterial: (id: number, value: IMaterial) => dispatch(updateDBItem('materials', id, value, updateMaterial)),
@@ -28,15 +28,14 @@ const mapDispatchToMaterialProps = (dispatch: any) => ({
 });
 
 type reduxProps =
-  ReturnType<typeof mapDispatchToMaterialProps>&ReturnType<typeof mapStateToMaterialProps>;
+  ReturnType<typeof mapDispatchToMaterialProps>;
 interface IMaterialProps {
   material: IMaterial,
-  openOrCloseModal: (modalComponent?: string) => void,
+  openOrCloseModal: (modalComponent?: IModalComponentKeys) => void,
 }
 
-const Material = connect(mapStateToMaterialProps, mapDispatchToMaterialProps)(({
+const Material = connect(null, mapDispatchToMaterialProps)(({
   material,
-  deleteCurrentMaterial,
   /* eslint-disable */ deleteMaterial /* eslint-enable */,
   openOrCloseModal,
   resetDeleteConfirm,
@@ -54,13 +53,22 @@ const Material = connect(mapStateToMaterialProps, mapDispatchToMaterialProps)(({
     updateMaterialForm(material);
     history.push('/materials/new');
   };
-  const deleteHandler = (): void => {
+
+  const deleteHandler = async () => {
     if (!id) return;
 
     openOrCloseModal('deleteConfirm');
-    if (deleteCurrentMaterial) deleteMaterial([id]);
-    openOrCloseModal();
-    resetDeleteConfirm();
+
+    try {
+      await deletePromise();
+
+      deleteMaterial([id]);
+    } catch {
+      console.log('Delete canceled');
+    } finally {
+      openOrCloseModal();
+      resetDeleteConfirm();
+    }
   };
 
   const calculatedPrice = (price / ((width * fLength) / 100)).toFixed(2);
@@ -71,6 +79,7 @@ const Material = connect(mapStateToMaterialProps, mapDispatchToMaterialProps)(({
     <IconLabel label={`${price.toFixed(2)}€`} icon={faShoppingCart} />,
     <IconLabel label={`${calculatedPrice}€/m²`} icon={faMoneyBill} />,
   ];
+
   const rightChildren = [
     <FontAwesomeIcon icon={faEdit} onClick={editHandler} />,
     <FontAwesomeIcon icon={faTrash} onClick={deleteHandler} />,
@@ -90,17 +99,19 @@ const mapStateToProps = (state: RootState) => ({
   materials: state.materials,
 });
 
+const mapDispatchToProps = (dispatch: any) => ({
+  openOrCloseModal:
+    (modalCompontent?: IModalComponentKeys): void => dispatch(updateUiModal(modalCompontent)),
+});
+
 interface IMaterialsProps {
   materials: IMaterialState
-  openOrCloseModal: (modalComponent?: string) => void
 }
 
-type reduxMaterialsProps = ReturnType<typeof mapStateToProps>
+type reduxMaterialsProps = ReturnType<typeof mapStateToProps>&ReturnType<typeof mapDispatchToProps>
 
 function Materials({ materials, openOrCloseModal }: IMaterialsProps & reduxMaterialsProps) {
   useDB('materials');
-
-  const openModalMaterials = (): void => openOrCloseModal('materials');
 
   return (
     <>
@@ -114,9 +125,9 @@ function Materials({ materials, openOrCloseModal }: IMaterialsProps & reduxMater
           />
         ),
       )}
-      <Button><Link to="/materials/new"><FontAwesomeIcon icon={faPlus} /></Link></Button>
+      <Button round><Link to="/materials/new"><FontAwesomeIcon icon={faPlus} /></Link></Button>
     </>
   );
 }
 
-export default connect(mapStateToProps)(Materials);
+export default connect(mapStateToProps, mapDispatchToProps)(Materials);
