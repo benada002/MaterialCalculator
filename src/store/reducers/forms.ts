@@ -3,7 +3,7 @@ import { UPDATE_FORM, RESET_FORM, FormActionTypes } from '../../interfaces/formA
 
 export const eb = null;
 
-const initialState: IForm = {
+export const initialState: IForm = {
   currProduct: {
     name: '',
     parts: [],
