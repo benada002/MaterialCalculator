@@ -1,4 +1,4 @@
-import React, { ReactNodeArray, Fragment } from 'react';
+import React, { ReactNodeArray, ReactNode } from 'react';
 
 import CardWithTitle from './cardWithTitle';
 import CardBody from './cardBody';
@@ -6,13 +6,13 @@ import CardBody from './cardBody';
 import styles from './Card.module.css';
 
 interface ICardProps {
-    children: ReactNodeArray
+    children: ReactNode
 }
 
 export default function ({ children }: ICardProps) {
   return (
     <div className={styles.card}>
-      {children && children.map((ele, i) => <Fragment key={i}>{ele}</Fragment>)}
+      {children && children}
     </div>
   );
 }

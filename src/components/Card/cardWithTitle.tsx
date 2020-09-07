@@ -1,7 +1,7 @@
-import React, { ReactNodeArray, Fragment } from 'react';
+import React, { ReactNodeArray } from 'react';
 
 import Card, { CardBody } from './index';
-import Grid from '../Grid';
+import Grid, { GridItem } from '../Grid';
 
 import styles from './Card.module.css';
 
@@ -17,28 +17,39 @@ export default function CardWithTitle({
 }: ICardWithTitleProps) {
   return (
     <Card>
-      {[
-        <CardBody key={1}>
-          <Grid>
-            {[
-              <Grid key={1}>
-                {[
-                  <div className={styles.title}>
-                    <Grid key={0} column>
-                      {[
-                        <h2 key={0} className="name">{title}</h2>,
-                        ...subTitle ? [<span key={1} className="manufacturer">{subTitle}</span>] : [],
-                      ]}
-                    </Grid>
-                  </div>,
-                  ...leftChildren?.map((ele, i) => <Fragment key={i + 1}>{ele}</Fragment>) ?? [],
-                ]}
-              </Grid>,
-              ...rightChildren ? [<Grid key={2}>{rightChildren.map((ele, i) => <Fragment key={i}>{ele}</Fragment>)}</Grid>] : [],
-            ]}
-          </Grid>
-        </CardBody>,
-      ]}
+      <CardBody>
+        <Grid>
+          <GridItem>
+            <Grid>
+              <GridItem>
+                <div className={styles.title}>
+                  <Grid column>
+                    <GridItem>
+                      <h2 className="name">{title}</h2>
+                    </GridItem>
+                    {
+                        subTitle
+                        && <GridItem><span className="manufacturer">{subTitle}</span></GridItem>
+                      }
+                  </Grid>
+                </div>
+              </GridItem>
+              {
+                  leftChildren
+                  && leftChildren.map((ele, i) => <GridItem key={i}>{ele}</GridItem>)
+                }
+            </Grid>
+          </GridItem>
+          {rightChildren
+            && (
+              <GridItem>
+                <Grid>
+                  {rightChildren.map((ele, i) => <GridItem key={i}>{ele}</GridItem>)}
+                </Grid>
+              </GridItem>
+            )}
+        </Grid>
+      </CardBody>
     </Card>
   );
 }
