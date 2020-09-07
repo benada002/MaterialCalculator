@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { updateFrom } from './store/actions/forms';
 import { IFormValues } from './interfaces/form';
 
+import Button from './components/Button';
+
 const mapDispatchToDeleteConfirmProps = (dispatch: any) => ({
   updateDeleteForm: (value: IFormValues) => dispatch(updateFrom('deleteCurrent', value)),
 });
@@ -12,8 +14,19 @@ type IDeleteConfirmProps = ReturnType<typeof mapDispatchToDeleteConfirmProps>;
 const DeleteConfirm = connect(null, mapDispatchToDeleteConfirmProps)(
   ({ updateDeleteForm }: IDeleteConfirmProps) => (
     <div>
-      <button type="button" onClick={() => updateDeleteForm({ cancel: true })}>Cancel</button>
-      <button type="button" onClick={() => updateDeleteForm({ confirm: true })}>Confirm</button>
+      <Button
+        onClick={() => updateDeleteForm({ cancel: true })}
+        noBackground
+        noShadow
+      >
+        Cancel
+      </Button>
+      <Button
+        onClick={() => updateDeleteForm({ confirm: true })}
+        noShadow
+      >
+        Confirm
+      </Button>
     </div>
   ),
 );
