@@ -1,9 +1,9 @@
-import React, { ReactNode, ReactElement, ReactNodeArray } from 'react';
+import React, { ReactNode, ReactElement } from 'react';
 
 import styles from './Grid.module.css';
 
 interface IGrid {
-    children: ReactNodeArray
+    children: ReactNode
     column?: boolean
 }
 
@@ -15,11 +15,17 @@ function Grid({ children, column = false }: IGrid): ReactElement {
 
   return (
     <div className={classes}>
-      {children && children.map(
-        (ele: ReactNode, i) => <div key={i} className={styles.item}>{ele}</div>,
-      )}
+      {children && children}
     </div>
   );
+}
+
+interface IGridItemProps {
+  children: ReactNode
+}
+
+export function GridItem({ children }: IGridItemProps) {
+  return <div className={styles.item}>{children}</div>;
 }
 
 export default Grid;
