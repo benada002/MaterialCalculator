@@ -2,17 +2,19 @@ import React, {
   ChangeEvent, FormEvent, useEffect, useState,
 } from 'react';
 import { connect } from 'react-redux';
-
-import StepView, { IStep } from 'src/components/StepView';
 import { useHistory } from 'react-router-dom';
-import { CardWithTitle } from 'src/components/Card';
-import Button from 'src/components/Button';
+
+import Grid, { GridItem } from 'src/components/Grid';
 import { addProduct, updateProduct } from '../../store/actions/products';
 import { addDBItem, updateDBItem } from '../../store/actions/asyncActions';
 import { IFormValues } from '../../interfaces/form';
 import { IProduct } from '../../interfaces/product';
 import { updateFrom, resetForm } from '../../store/actions/forms';
 import { RootState } from '../../interfaces/state';
+
+import StepView, { IStep } from '../../components/StepView';
+import { CardWithTitle } from '../../components/Card';
+import Button from '../../components/Button';
 
 const mapStateToProps = (state: RootState) => ({
   currentProduct: state.forms.currProduct,
@@ -152,19 +154,33 @@ function ProductModal(
         }
         {inputVisible ? (
           <form onSubmit={handleSizeSubmit}>
-            <input
-              type="text"
-              name="size"
-              placeholder="Größe"
-              required
-            />
-            {currentProduct?.parts && currentProduct?.parts.map((ele) => (
-              <div>
-                <input required type="text" name={`${ele}-width`} placeholder={`${ele} Width`} />
-                <input required type="text" name={`${ele}-height`} placeholder={`${ele} Height`} />
-              </div>
-            ))}
-            <button type="submit">Hinzufügen</button>
+            <Grid column>
+              <GridItem>
+                <input
+                  type="text"
+                  name="size"
+                  placeholder="Größe"
+                  required
+                />
+              </GridItem>
+              {currentProduct?.parts && (
+                <GridItem>
+                  {currentProduct?.parts.map((ele) => (
+                    <Grid>
+                      <GridItem>
+                        <input required type="text" name={`${ele}-width`} placeholder={`${ele} Width`} />
+                      </GridItem>
+                      <GridItem>
+                        <input required type="text" name={`${ele}-height`} placeholder={`${ele} Height`} />
+                      </GridItem>
+                    </Grid>
+                  ))}
+                </GridItem>
+              )}
+              <GridItem>
+                <Button type="submit">Hinzufügen</Button>
+              </GridItem>
+            </Grid>
           </form>
         )
           : <Button onClick={() => setInputVisible(true)}>Größe Hinzufügen</Button>}

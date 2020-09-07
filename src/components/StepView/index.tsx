@@ -53,7 +53,7 @@ function StepView({ steps }: IStepViewProps) {
             return (
               <Fragment key={i}>
                 <div className={stepClasses}>
-                  <span className={styles.progressbar__number}>{done ? <FontAwesomeIcon icon={faCheck} /> : i}</span>
+                  <span className={styles.progressbar__number}>{done ? <FontAwesomeIcon icon={faCheck} /> : i + 1}</span>
                   <span className={styles.progressbar__name}>{name}</span>
                 </div>
                 {showBar && <span className={barClasses} />}
