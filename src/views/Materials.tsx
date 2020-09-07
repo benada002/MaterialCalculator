@@ -71,7 +71,7 @@ const Material = connect(null, mapDispatchToMaterialProps)(({
     }
   };
 
-  const calculatedPrice = (price / ((width * fLength) / 100)).toFixed(2);
+  const calculatedPrice = (price / ((width / 100) * (fLength / 100))).toFixed(2);
 
   const leftChildren = [
     <IconLabel label={`${width}cm`} icon={faRulerVertical} />,

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
-import { useDB } from 'src/hooks/useGetDB';
-import { IMaterial } from 'src/interfaces/material';
-import Card, { CardWithTitle, CardBody } from '../components/Card';
+import { useDB } from '../hooks/useGetDB';
+import { IMaterial } from '../interfaces/material';
 import { RootState, IProductState, IMaterialState } from '../interfaces/state';
-import StepView from '../components/StepView';
 import { IProduct } from '../interfaces/product';
+
+import Button from '../components/Button';
+import Card, { CardWithTitle, CardBody } from '../components/Card';
+import StepView from '../components/StepView';
 
 interface IChooseProduct {
   currProduct?: IProduct,
@@ -21,7 +24,27 @@ function ChooseProduct({ currProduct, products, setCurrProduct }:IChooseProduct)
       {
         // @ts-ignore
         [...products.entries()].map(
-          ([id, product]) => <div onClick={() => { setCurrProduct(product); }}><CardWithTitle key={id} title={product.name} /></div>,
+          ([id, product]) => {
+            const currentChoise = currProduct && currProduct.id === id;
+
+            return (
+              <CardWithTitle
+                key={id}
+                title={product.name}
+                rightChildren={[
+                  <Button
+                    onClick={() => setCurrProduct(product)}
+                    noShadow
+                    noBackground={currentChoise}
+                    disabled={currentChoise}
+                    icon={currentChoise ? faCheckCircle : undefined}
+                  >
+                    {currentChoise ? 'Ausgewählt' : 'Auswählen'}
+                  </Button>,
+                ]}
+              />
+            );
+          },
         )
       }
     </>
@@ -47,10 +70,9 @@ function MatchPartToMaterial({
           // @ts-ignore
           (part, i) => (
             <Card>
-              {[
-                <CardBody>
-                  <p>{part + (currMaterials[i] ? ` = ${currMaterials[i].name}` : '')}</p>
-                  {i === currMaterials.length
+              <CardBody>
+                <p>{part + (currMaterials[i] ? ` = ${currMaterials[i].name}` : '')}</p>
+                {i === currMaterials.length
                   && (
                   <div>
                     {materials && [...materials.entries()].map(
@@ -58,14 +80,13 @@ function MatchPartToMaterial({
                         <CardWithTitle
                           key={id}
                           title={materialVal.name}
-                          rightChildren={[<button type="button" onClick={() => setMaterial(materialVal)}>Auswählen</button>]}
+                          rightChildren={[<Button onClick={() => setMaterial(materialVal)} noShadow>Auswählen</Button>]}
                         />
                       ),
                     )}
                   </div>
                   )}
-                </CardBody>,
-              ]}
+              </CardBody>
             </Card>
           ),
         )
@@ -83,7 +104,7 @@ function Sum({
   currProduct, currMaterials,
 }: ISum) {
   if (!currProduct || !currMaterials) return null;
-  console.log(currProduct, currMaterials);
+
   return (
     <>
       <h2>Ergebnis</h2>
@@ -96,19 +117,18 @@ function Sum({
 
             return (
               <Card>
-                {[
-                  <CardBody>
-                    <p>
-                      Größe:
-                      {' '}
-                      {size}
-                    </p>
-                    <div>
-                      {
+                <CardBody>
+                  <p>
+                    Größe:
+                    {' '}
+                    {size}
+                  </p>
+                  <div>
+                    {
                       // @ts-ignore
                     currProduct.parts && currProduct.parts.map((part) => {
-                      const currSum = (currMaterials[i].price / ((currMaterials[i].width * currMaterials[i].fLength) / 100))
-                        * ((currProduct.sizes[size as any][part].height * currProduct.sizes[size as any][part].width) / 100);
+                      const currSum = (currMaterials[i].price / ((currMaterials[i].width / 100) * (currMaterials[i].fLength / 100)))
+                        * ((currProduct.sizes[size as any][part].height / 100) * (currProduct.sizes[size as any][part].width / 100));
 
                       sum += currSum;
                       return (
@@ -116,7 +136,7 @@ function Sum({
                           title={part}
                           rightChildren={[
                             <span>
-                              {currSum}
+                              {currSum.toFixed(2)}
                               €
                             </span>,
                           ]}
@@ -124,15 +144,14 @@ function Sum({
                       );
                     })
                     }
-                    </div>
-                    <div>
-                      Gesamt:
-                      {' '}
-                      {sum}
-                      €
-                    </div>
-                  </CardBody>,
-                ]}
+                  </div>
+                  <div>
+                    Gesamt:
+                    {' '}
+                    {sum.toFixed(2)}
+                    €
+                  </div>
+                </CardBody>
               </Card>
             );
           },

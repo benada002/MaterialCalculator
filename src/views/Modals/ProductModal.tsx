@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import StepView, { IStep } from 'src/components/StepView';
 import { useHistory } from 'react-router-dom';
 import { CardWithTitle } from 'src/components/Card';
+import Button from 'src/components/Button';
 import { addProduct, updateProduct } from '../../store/actions/products';
 import { addDBItem, updateDBItem } from '../../store/actions/asyncActions';
 import { IFormValues } from '../../interfaces/form';
@@ -37,9 +38,8 @@ function ProductModal(
     openOrCloseModal, currentProduct, updateProductForm, resetProductForm, addItem, updateItem, currentModal,
   }: IProductModal & reduxProps,
 ) {
-  console.log(currentProduct);
   useEffect(() => () => resetProductForm(), [currentModal, resetProductForm]);
-  const [currPartIndex, setCurrPartIndex] = useState(currentProduct.parts.length ?? 0);
+  const [currPartIndex, setCurrPartIndex] = useState(currentProduct?.parts.length ?? 0);
   const history = useHistory();
 
   const close = () => history.goBack();
@@ -93,7 +93,7 @@ function ProductModal(
 
     return (
       <>
-        {currentProduct.parts && currentProduct.parts.map((ele, i) => ((i < currPartIndex) ? (<CardWithTitle title={ele} />) : null))}
+        {currentProduct?.parts && currentProduct?.parts.map((ele, i) => ((i < currPartIndex) ? (<CardWithTitle title={ele} />) : null))}
         {inputVisible ? (
           <>
             <input
@@ -101,12 +101,12 @@ function ProductModal(
               name="part"
               placeholder="Teil"
               required
-              value={currentProduct.parts[currPartIndex] ?? ''}
+              value={currentProduct?.parts[currPartIndex] ?? ''}
               onChange={(e: ChangeEvent<HTMLInputElement>) => handlePartsChange(e)}
             />
-            <button type="button" onClick={handleAddButton}>Hinzufügen</button>
+            <Button onClick={handleAddButton}>Hinzufügen</Button>
           </>
-        ) : <button type="button" onClick={() => setInputVisible(true)}>Teil Hinzufügen</button>}
+        ) : <Button onClick={() => setInputVisible(true)}>Teil Hinzufügen</Button>}
       </>
     );
   };
@@ -129,7 +129,7 @@ function ProductModal(
         const [part, measure] = name.split('-');
 
         // @ts-ignore
-        if (currentProduct.parts.indexOf(part) !== -1) {
+        if (currentProduct?.parts.indexOf(part) !== -1) {
           // @ts-ignore
           values[part] = values[part] ?? {};
           // @ts-ignore
@@ -146,9 +146,9 @@ function ProductModal(
     return (
       <>
         {
-          currentProduct.sizes
+          currentProduct?.sizes
           // @ts-ignore
-          && Object.entries(currentProduct.sizes).map(([key]) => <CardWithTitle title={key} />)
+          && Object.entries(currentProduct?.sizes).map(([key]) => <CardWithTitle title={key} />)
         }
         {inputVisible ? (
           <form onSubmit={handleSizeSubmit}>
@@ -158,17 +158,17 @@ function ProductModal(
               placeholder="Größe"
               required
             />
-            {currentProduct.parts && currentProduct.parts.map((ele, i) => (
-              <>
+            {currentProduct?.parts && currentProduct?.parts.map((ele) => (
+              <div>
                 <input required type="text" name={`${ele}-width`} placeholder={`${ele} Width`} />
                 <input required type="text" name={`${ele}-height`} placeholder={`${ele} Height`} />
-              </>
+              </div>
             ))}
             <button type="submit">Hinzufügen</button>
           </form>
         )
-          : <button type="button" onClick={() => setInputVisible(true)}>Größe Hinzufügen</button>}
-        <button type="submit">Submit</button>
+          : <Button onClick={() => setInputVisible(true)}>Größe Hinzufügen</Button>}
+        <Button type="submit">Submit</Button>
       </>
     );
   };
@@ -190,7 +190,7 @@ function ProductModal(
   return (
     <form onSubmit={handleSubmit}>
       <StepView steps={steps} />
-      <button type="button" onClick={handleReset}>Reset</button>
+      <Button type="button" noBackground noShadow onClick={handleReset}>Reset</Button>
     </form>
   );
 }

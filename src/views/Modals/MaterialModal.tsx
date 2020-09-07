@@ -2,6 +2,8 @@ import React, { ChangeEvent, FormEvent, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { useHistory } from 'react-router-dom';
+import Button from 'src/components/Button';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { addMaterial, updateMaterial } from '../../store/actions/materials';
 import { addDBItem, updateDBItem } from '../../store/actions/asyncActions';
 import { IFormValues } from '../../interfaces/form';
@@ -62,7 +64,7 @@ function MaterialModal(
 
   return (
     <>
-      <button type="button" onClick={close}>Close</button>
+      <Button noBackground noShadow icon={faChevronLeft} onClick={close}>Zurück</Button>
       <form onSubmit={handleSubmit}>
         <input type="hidden" name="id" value={currentMaterial?.id ?? ''} />
         <input
