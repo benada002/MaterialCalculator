@@ -1,17 +1,56 @@
-.button, .button a{
+.button{
     border: none;
-    background: var(--gradient-bg);
     color: var(--gradient-text-color);
-    border-radius: 999999rem;
-    height: 50px;
-    width: 50px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: var(--font-size);
+}
+
+.button a {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    box-shadow: var(--elevation-1);
-    cursor: pointer;
-    position: fixed;
-    bottom: var(--padding);
-    right: var(--padding);
+    width: 100%;
+    height: 100%;
+    color: var(--gradient-text-color);
+}
+
+.button{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--radius);
+    padding: 0 var(--padding);
+    box-sizing: border-box;
+    height: 40px;
+}
+
+.button .icon{
+    margin-right: var(--padding-xs);
+}
+
+.button.round{
+    border-radius: 999999rem;
+    height: 50px;
+    width: 50px;
     padding: 0;
+}
+
+.button.shadow{
+    box-shadow: var(--elevation-1);
+}
+
+.button.background{
+    background: var(--gradient-bg);
+}
+
+.button.border{
+    background: none;
+    color: var(--gradient-accent);
+    border: 2px solid var(--gradient-accent);
+}
+
+.button.border a{
+    color: var(--gradient-accent);
 }

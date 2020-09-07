@@ -1,22 +1,40 @@
 import React, {
-  ReactElement, ReactNode, MouseEvent,
+  ReactNode, DetailedHTMLProps, ButtonHTMLAttributes,
 } from 'react';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import styles from './Button.module.css';
 
 interface IButton {
     children: ReactNode;
-    onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+    round?: boolean;
+    noShadow?: boolean;
+    noBackground?: boolean;
+    icon?: IconProp,
 }
 
-function Button({ children, onClick }: IButton): ReactElement {
-  const handleClick = (event: MouseEvent<HTMLButtonElement>): void => {
-    event.preventDefault();
-    if (onClick) onClick(event);
-  };
+function Button({
+  children,
+  onClick,
+  round,
+  noShadow,
+  noBackground,
+  icon,
+  ...buttonProps
+}: IButton&DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
+  const buttonClasses = [
+    styles.button,
+    ...round ? [styles.round] : [],
+    ...!noShadow ? [styles.shadow] : [],
+    noBackground ? styles.border : styles.background,
+  ].join(' ');
 
   return (
-    <button className={styles.button} onClick={handleClick} type="button">{children}</button>
+    <button className={buttonClasses} onClick={onClick} type="button" {...buttonProps}>
+      {icon && <span className={styles.icon}><FontAwesomeIcon icon={icon} /></span>}
+      {children}
+    </button>
   );
 }
 
