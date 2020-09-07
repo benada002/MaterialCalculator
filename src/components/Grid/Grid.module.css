@@ -1,0 +1,22 @@
+.grid{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.column{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.item{
+    padding-right: var(--padding);
+    display: inline-flex;
+    overflow: hidden;
+}
+
+.item:last-child{
+    padding-right: 0;
+}
