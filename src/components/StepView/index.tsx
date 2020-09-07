@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import styles from './StepView.module.css';
+
+import Button from '../Button';
 
 export interface IStep {
   name: string,
@@ -49,21 +51,28 @@ function StepView({ steps }: IStepViewProps) {
             ].join(' ');
 
             return (
-              <>
+              <Fragment key={i}>
                 <div className={stepClasses}>
                   <span className={styles.progressbar__number}>{done ? <FontAwesomeIcon icon={faCheck} /> : i}</span>
                   <span className={styles.progressbar__name}>{name}</span>
                 </div>
                 {showBar && <span className={barClasses} />}
-              </>
+              </Fragment>
             );
           },
         )}
       </div>
       <div className={styles.view}>{element}</div>
       <div className={styles.buttons}>
-        <button type="button" disabled={showBackButton} className={`${styles.button} ${styles['button--back']}`} onClick={stepDecrement}>Zurück</button>
-        <button type="button" disabled={showForwardButton} className={`${styles.button} ${styles['button--forward']}`} onClick={stepIncrement}>Weiter</button>
+        <Button
+          disabled={showBackButton}
+          noShadow
+          noBackground
+          onClick={stepDecrement}
+        >
+          Zurück
+        </Button>
+        <Button disabled={showForwardButton} onClick={stepIncrement}>Weiter</Button>
       </div>
     </>
   );

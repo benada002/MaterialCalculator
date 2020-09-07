@@ -51,3 +51,10 @@
     background: var(--gradient-bg);
     color: var(--gradient-text-color);
 }
+
+.buttons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--margin);
+}
