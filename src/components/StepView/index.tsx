@@ -28,8 +28,8 @@ function StepView({ steps }: IStepViewProps) {
     if (currentStep - 1 >= 0) setCurrentStep(currentStep - 1);
   };
 
-  const showForwardButton = currentStep >= steps.length - 1;
-  const showBackButton = currentStep <= 0;
+  const showForwardButton = currentStep < steps.length - 1;
+  const showBackButton = currentStep > 0;
 
   return (
     <>
@@ -64,15 +64,22 @@ function StepView({ steps }: IStepViewProps) {
       </div>
       <div className={styles.view}>{element}</div>
       <div className={styles.buttons}>
-        <Button
-          disabled={showBackButton}
-          noShadow
-          noBackground
-          onClick={stepDecrement}
-        >
-          Zurück
-        </Button>
-        <Button disabled={showForwardButton} onClick={stepIncrement}>Weiter</Button>
+        {showBackButton && (
+          <div className={styles.back}>
+            <Button
+              noShadow
+              noBackground
+              onClick={stepDecrement}
+            >
+              Zurück
+            </Button>
+          </div>
+        )}
+        {showForwardButton && (
+          <div className={styles.forward}>
+            <Button onClick={stepIncrement}>Weiter</Button>
+          </div>
+        )}
       </div>
     </>
   );

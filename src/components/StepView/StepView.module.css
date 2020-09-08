@@ -54,7 +54,16 @@
 
 .buttons{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: var(--margin);
+}
+
+.buttons .forward{
+    justify-self: flex-end;
+    margin-left: auto;
+}
+
+.buttons .back{
+    margin-right: auto;
 }
