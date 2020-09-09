@@ -3,14 +3,15 @@
     flex-direction: column;
     justify-content: space-between;
     background: var(--gradient-bg);
+    flex-shrink: 0;
 }
 
 .sidebar, .sidebar.collapsed:hover{
-    width: 20%;
-    max-width: 225px;
+    width: 225px;
 }
 
 .sidebar.collapsed{
+    position: static;
     width: auto;
 }
 
@@ -40,7 +41,6 @@
 
 .link-icon{
     padding: var(--padding);
-    font-size: var(--font-size-bigger);
 }
 
 .link-text, .collapsed:hover .link-text{
@@ -51,4 +51,13 @@
 
 .collapsed .link-text{
     display: none;
+}
+
+@media(max-width: 800px){
+    .sidebar, .sidebar.collapsed{
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+    }
 }
