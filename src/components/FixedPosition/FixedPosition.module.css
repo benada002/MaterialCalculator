@@ -1,0 +1,8 @@
+.fixed{
+    position: fixed;
+}
+
+.bottom-right{
+    bottom: var(--padding);
+    right: var(--padding);
+}
