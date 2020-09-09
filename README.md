@@ -3,4 +3,3 @@ An app where you can create products (clothes) and materials. Then can you match
 
 ### Used Technologies
 `TypeScript` `React` `Redux` `React-Redux` `React-Router` `Redux-Thunk` `IndexedDB` `Idb`
-`
