@@ -19,6 +19,7 @@ import Button from '../components/Button';
 import IconLabel from '../components/IconLabel';
 import { CardWithTitle } from '../components/Card';
 import { IModalComponentKeys } from '../modal';
+import FixedPosition from '../components/FixedPosition';
 
 const mapDispatchToMaterialProps = (dispatch: any) => ({
   deleteMaterial: (keys: number[]) => dispatch(deleteDBItem('materials', keys, deleteMaterial)),
@@ -125,7 +126,13 @@ function Materials({ materials, openOrCloseModal }: IMaterialsProps & reduxMater
           />
         ),
       )}
-      <Button round><Link to="/materials/new"><FontAwesomeIcon icon={faPlus} /></Link></Button>
+      <FixedPosition position="bottom-right">
+        <Button round>
+          <Link to="/materials/new">
+            <FontAwesomeIcon icon={faPlus} />
+          </Link>
+        </Button>
+      </FixedPosition>
     </>
   );
 }

@@ -2,20 +2,22 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
-
 import { Link, useHistory } from 'react-router-dom';
-import { IModalComponentKeys } from 'src/modal';
-import { updateUiModal } from 'src/store/actions/ui';
+
+import { IModalComponentKeys } from '../modal';
+import { updateUiModal } from '../store/actions/ui';
 import { updateProduct, deleteProduct } from '../store/actions/products';
 import { updateFrom, resetForm } from '../store/actions/forms';
-import Button from '../components/Button';
 import { IMaterial } from '../interfaces/material';
 import { deleteDBItem, updateDBItem } from '../store/actions/asyncActions';
 import { useDB } from '../hooks/useGetDB';
 import { RootState } from '../interfaces/state';
-import { CardWithTitle } from '../components/Card';
 import { IProduct } from '../interfaces/product';
 import deletePromise from '../deletePromise';
+
+import Button from '../components/Button';
+import { CardWithTitle } from '../components/Card';
+import FixedPosition from '../components/FixedPosition';
 
 const mapDispatchToMaterialProps = (dispatch: any) => ({
   deleteProduct: (keys: number[]) => dispatch(deleteDBItem('products', keys, deleteProduct)),
@@ -97,9 +99,21 @@ function Products({ products, openOrCloseModal }: reduxTypes) {
     <>
       <h1>Products</h1>
       {products && [...products.values()].map(
-        (product) => <Product key={product.id} product={product} openOrCloseModal={openOrCloseModal} />,
+        (product) => (
+          <Product
+            key={product.id}
+            product={product}
+            openOrCloseModal={openOrCloseModal}
+          />
+        ),
       )}
-      <Button round><Link to="/products/new"><FontAwesomeIcon icon={faPlus} /></Link></Button>
+      <FixedPosition position="bottom-right">
+        <Button round>
+          <Link to="/products/new">
+            <FontAwesomeIcon icon={faPlus} />
+          </Link>
+        </Button>
+      </FixedPosition>
     </>
   );
 }

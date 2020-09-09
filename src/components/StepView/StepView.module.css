@@ -2,7 +2,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     padding: var(--padding);
     box-sizing: border-box;
 }
@@ -12,7 +12,7 @@
     height: 3px;
     background-color: #e5e5e5;
     align-self: start;
-    margin-top: 24px;
+    margin-top: calc((50px - 3px) / 2);
 }
 
 .progressbar__bar--done{
@@ -32,8 +32,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
     border: 3px solid #e5e5e5;
     border-radius: 999999rem;
     font-size: var(--font-size);
@@ -45,8 +46,6 @@
 }
 
 .progressbar__item--done .progressbar__number{
-    width: 50px;
-    height: 50px;
     border: 0px;
     background: var(--gradient-bg);
     color: var(--gradient-text-color);
@@ -54,7 +53,16 @@
 
 .buttons{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: var(--margin);
+}
+
+.buttons .forward{
+    justify-self: flex-end;
+    margin-left: auto;
+}
+
+.buttons .back{
+    margin-right: auto;
 }

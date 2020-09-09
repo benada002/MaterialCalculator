@@ -9,7 +9,7 @@ import { IProduct } from '../interfaces/product';
 
 import Button from '../components/Button';
 import Card, { CardWithTitle, CardBody } from '../components/Card';
-import StepView from '../components/StepView';
+import StepView, { Step } from '../components/StepView';
 
 interface IChooseProduct {
   currProduct?: IProduct,
@@ -80,7 +80,14 @@ function MatchPartToMaterial({
                         <CardWithTitle
                           key={id}
                           title={materialVal.name}
-                          rightChildren={[<Button onClick={() => setMaterial(materialVal)} noShadow>Auswählen</Button>]}
+                          rightChildren={[
+                            <Button
+                              onClick={() => setMaterial(materialVal)}
+                              noShadow
+                            >
+                              Auswählen
+                            </Button>,
+                          ]}
                         />
                       ),
                     )}
@@ -183,33 +190,29 @@ function Calculator({ products, materials } :ICalculatorProps) {
   };
 
   return (
-    <StepView steps={[
-      {
-        name: 'Wähle Ein Produkt',
-        element: <ChooseProduct
+    <StepView>
+      <Step name="Wähle ein Produkt" goForward={!!currProduct}>
+        <ChooseProduct
           products={products}
           currProduct={currProduct}
           setCurrProduct={setCurrProduct}
-        />,
-      },
-      {
-        name: 'Wähle Material',
-        element: <MatchPartToMaterial
+        />
+      </Step>
+      <Step name="Wähle Material" goForward={currMaterials.length === currProduct?.parts.length}>
+        <MatchPartToMaterial
           currProduct={currProduct}
           setMaterial={setMaterial}
           currMaterials={currMaterials}
           materials={materials}
-        />,
-      },
-      {
-        name: 'Ergebniss',
-        element: <Sum
+        />
+      </Step>
+      <Step name="Ergebnis">
+        <Sum
           currProduct={currProduct}
           currMaterials={currMaterials}
-        />,
-      },
-    ]}
-    />
+        />
+      </Step>
+    </StepView>
   );
 }
 export default connect(mapStateToProps)(Calculator);
