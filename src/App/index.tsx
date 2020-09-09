@@ -8,12 +8,12 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-import ProductModal from '../views/Modals/ProductModal';
+import NewProduct from '../views/NewProduct';
 import Products from '../views/Products';
 import Materials from '../views/Materials';
 import Calculator from '../views/Calculator';
 import Settings from '../views/Settings';
-import MaterialModal from '../views/Modals/MaterialModal';
+import NewMaterial from '../views/NewMaterial';
 import Sidebar from '../components/Sidebar';
 import Modal from '../components/Modal';
 import { RootState } from '../interfaces/state';
@@ -27,7 +27,8 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  openOrCloseModal: (modalCompontent?: IModalComponentKeys): void => dispatch(updateUiModal(modalCompontent)),
+  openOrCloseModal:
+    (modalCompontent?: IModalComponentKeys): void => dispatch(updateUiModal(modalCompontent)),
 });
 
 type IAppProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -40,15 +41,19 @@ function App({ openOrCloseModal, currentModalComponent }: IAppProps) {
         <motion.main className={styles.view}>
           <Switch>
             <Redirect exact from="/" to="/products" />
-            <Route path="/products/new" component={ProductModal} />
+            <Route path="/products/new" component={NewProduct} />
             <Route path="/products" component={Products} />
-            <Route path="/materials/new" component={MaterialModal} />
+            <Route path="/materials/new" component={NewMaterial} />
             <Route path="/materials" component={Materials} />
             <Route path="/calculator" component={Calculator} />
             <Route path="/settings" component={Settings} />
           </Switch>
         </motion.main>
-        <Modal currentComponent={currentModalComponent} close={openOrCloseModal} components={modalComponents} />
+        <Modal
+          currentComponent={currentModalComponent}
+          close={openOrCloseModal}
+          components={modalComponents}
+        />
       </div>
     </Router>
   );
