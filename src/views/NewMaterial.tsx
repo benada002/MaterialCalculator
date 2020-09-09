@@ -2,14 +2,15 @@ import React, { ChangeEvent, FormEvent, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { useHistory } from 'react-router-dom';
-import Button from 'src/components/Button';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import { addMaterial, updateMaterial } from '../../store/actions/materials';
-import { addDBItem, updateDBItem } from '../../store/actions/asyncActions';
-import { IFormValues } from '../../interfaces/form';
-import { IMaterial } from '../../interfaces/material';
-import { updateFrom, resetForm } from '../../store/actions/forms';
-import { RootState } from '../../interfaces/state';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { addMaterial, updateMaterial } from '../store/actions/materials';
+import { addDBItem, updateDBItem } from '../store/actions/asyncActions';
+import { IFormValues } from '../interfaces/form';
+import { IMaterial } from '../interfaces/material';
+import { updateFrom, resetForm } from '../store/actions/forms';
+import { RootState } from '../interfaces/state';
+
+import Button from '../components/Button';
 
 const mapStateToProps = (state: RootState) => ({
   currentMaterial: state.forms.currMaterial,
@@ -64,7 +65,7 @@ function MaterialModal(
 
   return (
     <>
-      <Button noBackground noShadow icon={faChevronLeft} onClick={close}>Zurück</Button>
+      <Button noBackground noShadow icon={faTimes} onClick={close}>Abbrechen</Button>
       <form onSubmit={handleSubmit}>
         <input type="hidden" name="id" value={currentMaterial?.id ?? ''} />
         <input
@@ -107,8 +108,8 @@ function MaterialModal(
           value={currentMaterial?.price ?? ''}
           onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'price', true)}
         />
-        <button type="submit">Submit</button>
-        <button type="button" onClick={handleReset}>Reset</button>
+        <Button type="submit">Submit</Button>
+        <Button noBackground noShadow onClick={handleReset}>Reset</Button>
       </form>
     </>
   );
