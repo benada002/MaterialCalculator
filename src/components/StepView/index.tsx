@@ -1,4 +1,6 @@
-import React, { useState, Fragment } from 'react';
+import React, {
+  useState, Fragment, ReactElement, Children, ReactNode,
+} from 'react';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -6,20 +8,29 @@ import styles from './StepView.module.css';
 
 import Button from '../Button';
 
-export interface IStep {
+interface IStepProps {
+  children?: ReactNode,
   name: string,
-  element: JSX.Element
+  goForward?: boolean
+}
+
+export function Step(props: IStepProps) {
+  return <>{props?.children}</>;
 }
 
 interface IStepViewProps {
-  steps: IStep[]
+  children?: ReactElement<IStepProps>[]|ReactElement<IStepProps>
 }
 
-function StepView({ steps }: IStepViewProps) {
-  if (steps.length === 0) return null;
-  // eslint-disable-next-line
+function StepView({ children }: IStepViewProps) {
+  if (!children || typeof children !== 'object') return null;
+  const steps = Children.toArray(children);
+
+  /* eslint-disable */
   const [currentStep, setCurrentStep] = useState(0);
-  const { element } = steps[currentStep];
+  /* eslint-enable */
+
+  const element = steps[currentStep];
 
   const stepIncrement = () => {
     if (currentStep + 1 <= steps.length) setCurrentStep(currentStep + 1);
@@ -28,14 +39,18 @@ function StepView({ steps }: IStepViewProps) {
     if (currentStep - 1 >= 0) setCurrentStep(currentStep - 1);
   };
 
-  const showForwardButton = currentStep < steps.length - 1;
+  // @ts-ignore
+  const showForwardButton = element.props.goForward && currentStep < steps.length - 1;
   const showBackButton = currentStep > 0;
 
   return (
     <>
       <div className={styles.progressbar}>
         {steps && steps.map(
-          ({ name }, i) => {
+          (step, i) => {
+            // @ts-ignore
+            const { name } = step.props;
+
             const showBar = i < steps.length - 1;
             const done = i < currentStep;
             const current = i === currentStep;
@@ -45,6 +60,7 @@ function StepView({ steps }: IStepViewProps) {
               ...done ? [styles['progressbar__item--done']] : [],
               ...current ? [styles['progressbar__item--current']] : [],
             ].join(' ');
+
             const barClasses = [
               styles.progressbar__bar,
               ...done ? [styles['progressbar__bar--done']] : [],
@@ -53,7 +69,9 @@ function StepView({ steps }: IStepViewProps) {
             return (
               <Fragment key={i}>
                 <div className={stepClasses}>
-                  <span className={styles.progressbar__number}>{done ? <FontAwesomeIcon icon={faCheck} /> : i + 1}</span>
+                  <span className={styles.progressbar__number}>
+                    {done ? <FontAwesomeIcon icon={faCheck} /> : i + 1}
+                  </span>
                   <span className={styles.progressbar__name}>{name}</span>
                 </div>
                 {showBar && <span className={barClasses} />}
