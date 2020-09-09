@@ -52,7 +52,7 @@ export default function (state = initialState, action: FormActionTypes) {
       state = {
         ...state,
         // @ts-ignore
-        [action.key]: initialState[action],
+        [action.key]: initialState[action.key],
       };
       break;
   }
