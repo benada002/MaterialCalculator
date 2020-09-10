@@ -20,26 +20,22 @@ export default function CardWithTitle({
       <CardBody>
         <Grid>
           <GridItem>
-            <Grid>
-              <GridItem>
-                <div className={styles.title}>
-                  <Grid column>
-                    <GridItem>
-                      <h2 className="name">{title}</h2>
-                    </GridItem>
-                    {
+            <div className={styles.title}>
+              <Grid column>
+                <GridItem>
+                  <h2 className="name">{title}</h2>
+                </GridItem>
+                {
                         subTitle
                         && <GridItem><span className="manufacturer">{subTitle}</span></GridItem>
                       }
-                  </Grid>
-                </div>
-              </GridItem>
-              {
-                  leftChildren
-                  && leftChildren.map((ele, i) => <GridItem key={i}>{ele}</GridItem>)
-                }
-            </Grid>
+              </Grid>
+            </div>
           </GridItem>
+          {
+            leftChildren
+            && <GridItem margin="right"><Grid>{leftChildren.map((ele, i) => <GridItem key={i}>{ele}</GridItem>)}</Grid></GridItem>
+          }
           {rightChildren
             && (
               <GridItem>

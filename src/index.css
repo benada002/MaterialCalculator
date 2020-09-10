@@ -42,3 +42,11 @@ code {
   font-size: var(--font-size-sm);
   line-height: var(--font-size);
 }
+
+.mr-left-auto{
+  margin-left: auto;
+}
+
+.mr-right-auto{
+  margin-right: auto;
+}

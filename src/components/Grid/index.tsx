@@ -22,10 +22,16 @@ function Grid({ children, column = false }: IGrid): ReactElement {
 
 interface IGridItemProps {
   children: ReactNode
+  margin?: 'left'|'right'
 }
 
-export function GridItem({ children }: IGridItemProps) {
-  return <div className={styles.item}>{children}</div>;
+export function GridItem({ children, margin }: IGridItemProps) {
+  const classes = [
+    styles.item,
+    ...margin ? [`mr-${margin}-auto`] : [],
+  ].join(' ');
+
+  return <div className={classes}>{children}</div>;
 }
 
 export default Grid;
