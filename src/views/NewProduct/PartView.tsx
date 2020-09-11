@@ -34,6 +34,7 @@ export default function PartView({
     setInputVisible(false);
   };
 
+  // TODO: Add part delete button.
   return (
     <>
       {

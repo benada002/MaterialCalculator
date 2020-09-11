@@ -45,6 +45,7 @@ export default function SizeView({ currentProduct, updateProductForm }: ISizeVie
     e.currentTarget.reset();
   };
 
+  // TODO: Add size delete button.
   return (
     <>
       {
