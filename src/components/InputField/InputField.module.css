@@ -1,0 +1,6 @@
+.input-field{
+    border: 1px solid #e2e2e2;
+    border-radius: var(--radius);
+    padding: var(--padding-s) var(--padding);
+    font-size: var(--font-size);
+}

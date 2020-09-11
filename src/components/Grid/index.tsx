@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement } from 'react';
+import React, { ReactNode, ReactElement, ReactNodeArray } from 'react';
 
 import styles from './Grid.module.css';
 
@@ -22,7 +22,7 @@ function Grid({ children, column = false }: IGrid): ReactElement {
 
 interface IGridItemProps {
   children: ReactNode
-  margin?: 'left'|'right'
+  margin?: 'left'|'right'|'600-left'|'600-right'
 }
 
 export function GridItem({ children, margin }: IGridItemProps) {
@@ -32,6 +32,15 @@ export function GridItem({ children, margin }: IGridItemProps) {
   ].join(' ');
 
   return <div className={classes}>{children}</div>;
+}
+
+interface IGridGutter {
+  gutter: 'xs'|'s'|'m'
+  children: ReactNode|ReactNodeArray
+}
+
+export function GridGutter({ gutter, children }: IGridGutter) {
+  return <div className={styles[`gutter-${gutter}`]}>{children}</div>;
 }
 
 export default Grid;

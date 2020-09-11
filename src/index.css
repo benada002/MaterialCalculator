@@ -33,14 +33,14 @@ code {
     monospace;
 }
 
-.name{
-  font-size: var(--font-size);
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
   margin: 0;
 }
 
-.manufacturer{
-  font-size: var(--font-size-sm);
-  line-height: var(--font-size);
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .mr-left-auto{

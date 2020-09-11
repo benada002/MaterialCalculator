@@ -20,6 +20,16 @@
     flex-wrap: wrap;
 }
 
+.name{
+    font-size: var(--font-size);
+    margin: 0;
+}
+
+.subtitle{
+    font-size: var(--font-size-sm);
+    line-height: var(--font-size);
+}
+
 .title, .left-children, .right-children{
     display: inline-flex;
     justify-content: flex-start;
