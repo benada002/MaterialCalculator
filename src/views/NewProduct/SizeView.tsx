@@ -6,6 +6,7 @@ import { reduxProps } from '.';
 import Grid, { GridItem } from '../../components/Grid';
 import Button from '../../components/Button';
 import { CardWithTitle } from '../../components/Card';
+import InputField from '../../components/InputField';
 
 interface ISizeView{
   currentProduct: IProduct
@@ -44,6 +45,7 @@ export default function SizeView({ currentProduct, updateProductForm }: ISizeVie
     e.currentTarget.reset();
   };
 
+  // TODO: Add size delete button.
   return (
     <>
       {
@@ -55,7 +57,7 @@ export default function SizeView({ currentProduct, updateProductForm }: ISizeVie
         <form onSubmit={handleSizeSubmit}>
           <Grid column>
             <GridItem>
-              <input
+              <InputField
                 type="text"
                 name="size"
                 placeholder="Größe"
@@ -67,10 +69,10 @@ export default function SizeView({ currentProduct, updateProductForm }: ISizeVie
                 {currentProduct?.parts.map((ele) => (
                   <Grid>
                     <GridItem>
-                      <input required type="text" name={`${ele}-width`} placeholder={`${ele} Width`} />
+                      <InputField required type="text" name={`${ele}-width`} placeholder={`${ele} Width`} />
                     </GridItem>
                     <GridItem>
-                      <input required type="text" name={`${ele}-height`} placeholder={`${ele} Height`} />
+                      <InputField required type="text" name={`${ele}-height`} placeholder={`${ele} Height`} />
                     </GridItem>
                   </Grid>
                 ))}

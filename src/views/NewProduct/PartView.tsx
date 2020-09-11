@@ -5,6 +5,7 @@ import { reduxProps } from '.';
 
 import Button from '../../components/Button';
 import { CardWithTitle } from '../../components/Card';
+import InputField from '../../components/InputField';
 
 interface IPartView{
   currentProduct: IProduct
@@ -33,6 +34,7 @@ export default function PartView({
     setInputVisible(false);
   };
 
+  // TODO: Add part delete button.
   return (
     <>
       {
@@ -42,7 +44,7 @@ export default function PartView({
       }
       {inputVisible ? (
         <>
-          <input
+          <InputField
             type="text"
             name="part"
             placeholder="Teil"

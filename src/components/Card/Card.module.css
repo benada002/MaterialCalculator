@@ -12,3 +12,35 @@
 .card__body--with-border{
     border-bottom: 1px solid #f2f2f2;
 }
+
+.title-card{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.name{
+    font-size: var(--font-size);
+    margin: 0;
+}
+
+.subtitle{
+    font-size: var(--font-size-sm);
+    line-height: var(--font-size);
+}
+
+.title, .left-children, .right-children{
+    display: inline-flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.right-children{
+    justify-content: flex-end;
+    margin-left: auto;
+}
+
+.title{
+    flex-direction: column;
+}

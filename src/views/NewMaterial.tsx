@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { useHistory } from 'react-router-dom';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Grid, { GridItem } from 'src/components/Grid';
 import { addMaterial, updateMaterial } from '../store/actions/materials';
 import { addDBItem, updateDBItem } from '../store/actions/asyncActions';
 import { IFormValues } from '../interfaces/form';
@@ -11,6 +12,7 @@ import { updateFrom, resetForm } from '../store/actions/forms';
 import { RootState } from '../interfaces/state';
 
 import Button from '../components/Button';
+import InputField from '../components/InputField';
 
 const mapStateToProps = (state: RootState) => ({
   currentMaterial: state.forms.currMaterial,
@@ -68,48 +70,85 @@ function MaterialModal(
       <Button noBackground noShadow icon={faTimes} onClick={close}>Abbrechen</Button>
       <form onSubmit={handleSubmit}>
         <input type="hidden" name="id" value={currentMaterial?.id ?? ''} />
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          required
-          value={currentMaterial?.name ?? ''}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'name')}
-        />
-        <input
-          type="text"
-          name="manufacturer"
-          placeholder="Hersteller"
-          required
-          value={currentMaterial?.manufacturer ?? ''}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'manufacturer')}
-        />
-        <input
-          type="number"
-          name="length"
-          placeholder="Länge"
-          required
-          value={currentMaterial?.fLength ?? ''}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'fLength', true)}
-        />
-        <input
-          type="number"
-          name="width"
-          placeholder="Breite"
-          required
-          value={currentMaterial?.width ?? ''}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'width', true)}
-        />
-        <input
-          type="number"
-          name="price"
-          placeholder="Preis"
-          required
-          value={currentMaterial?.price ?? ''}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'price', true)}
-        />
-        <Button type="submit">Submit</Button>
-        <Button noBackground noShadow onClick={handleReset}>Reset</Button>
+        <Grid column>
+          <GridItem>
+            <Grid>
+              <GridItem>
+                <InputField
+                  label="Name"
+                  type="text"
+                  name="name"
+                  placeholder="Name"
+                  required
+                  value={currentMaterial?.name ?? ''}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'name')}
+                />
+              </GridItem>
+              <GridItem>
+                <Grid>
+                  <GridItem>
+                    <InputField
+                      label="Hersteller"
+                      type="text"
+                      name="manufacturer"
+                      placeholder="Hersteller"
+                      required
+                      value={currentMaterial?.manufacturer ?? ''}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'manufacturer')}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <InputField
+                      label="Preis"
+                      type="number"
+                      name="price"
+                      placeholder="Preis"
+                      required
+                      value={currentMaterial?.price ?? ''}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'price', true)}
+                    />
+                  </GridItem>
+                </Grid>
+              </GridItem>
+              <GridItem>
+                <Grid>
+                  <GridItem>
+                    <InputField
+                      label="Länge"
+                      type="number"
+                      name="length"
+                      placeholder="Länge"
+                      required
+                      value={currentMaterial?.fLength ?? ''}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'fLength', true)}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <InputField
+                      label="Breite"
+                      type="number"
+                      name="width"
+                      placeholder="Breite"
+                      required
+                      value={currentMaterial?.width ?? ''}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, 'width', true)}
+                    />
+                  </GridItem>
+                </Grid>
+              </GridItem>
+            </Grid>
+          </GridItem>
+          <GridItem>
+            <Grid>
+              <GridItem>
+                <Button noBackground noShadow onClick={handleReset}>Reset</Button>
+              </GridItem>
+              <GridItem>
+                <Button type="submit">Submit</Button>
+              </GridItem>
+            </Grid>
+          </GridItem>
+        </Grid>
       </form>
     </>
   );

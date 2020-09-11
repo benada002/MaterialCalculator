@@ -1,7 +1,7 @@
 import React, { ReactNodeArray } from 'react';
 
 import Card, { CardBody } from './index';
-import Grid, { GridItem } from '../Grid';
+import Grid, { GridGutter, GridItem } from '../Grid';
 
 import styles from './Card.module.css';
 
@@ -18,37 +18,43 @@ export default function CardWithTitle({
   return (
     <Card>
       <CardBody>
-        <Grid>
-          <GridItem>
-            <Grid>
-              <GridItem>
-                <div className={styles.title}>
-                  <Grid column>
-                    <GridItem>
-                      <h2 className="name">{title}</h2>
-                    </GridItem>
-                    {
+        <GridGutter gutter="m">
+          <Grid>
+            <GridItem>
+              <div className={styles.title}>
+                <Grid column>
+                  <GridItem>
+                    <h2 className={styles.name}>{title}</h2>
+                  </GridItem>
+                  {
                         subTitle
-                        && <GridItem><span className="manufacturer">{subTitle}</span></GridItem>
+                        && <GridItem><span className={styles.subtitle}>{subTitle}</span></GridItem>
                       }
-                  </Grid>
-                </div>
-              </GridItem>
-              {
-                  leftChildren
-                  && leftChildren.map((ele, i) => <GridItem key={i}>{ele}</GridItem>)
-                }
-            </Grid>
-          </GridItem>
-          {rightChildren
-            && (
-              <GridItem>
-                <Grid>
-                  {rightChildren.map((ele, i) => <GridItem key={i}>{ele}</GridItem>)}
                 </Grid>
+              </div>
+            </GridItem>
+            {
+            leftChildren
+            && (
+            <GridItem margin="right">
+              <GridGutter gutter="s">
+                <Grid>{leftChildren.map((ele, i) => <GridItem key={i}>{ele}</GridItem>)}</Grid>
+              </GridGutter>
+            </GridItem>
+            )
+          }
+            {rightChildren
+            && (
+              <GridItem margin="left">
+                <GridGutter gutter="s">
+                  <Grid>
+                    {rightChildren.map((ele, i) => <GridItem key={i}>{ele}</GridItem>)}
+                  </Grid>
+                </GridGutter>
               </GridItem>
             )}
-        </Grid>
+          </Grid>
+        </GridGutter>
       </CardBody>
     </Card>
   );
