@@ -11,9 +11,9 @@ export default function InputField(
   { label, ...props }: IInputField&DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
 ) {
   return (
-    <Grid column>
-      {label && <GridItem><label htmlFor={props.name}>{label}</label></GridItem>}
-      <GridItem><input {...props} className={styles['input-field']} /></GridItem>
-    </Grid>
+    <div className={styles['input-container']}>
+      {label && <label htmlFor={props.name}>{label}</label>}
+      <input {...props} className={styles['input-field']} />
+    </div>
   );
 }

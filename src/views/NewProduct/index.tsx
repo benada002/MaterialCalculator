@@ -68,7 +68,6 @@ function ProductModal(
 
   return (
     <>
-      <Button onClick={close} noShadow noBackground icon={faTimes}>Abbrechen</Button>
       <form onSubmit={handleSubmit}>
         <StepView>
           <Step name="Produkt Name" goForward={typeof name === 'string' && name !== ''}>
@@ -86,7 +85,7 @@ function ProductModal(
             <SizeView currentProduct={currentProduct} updateProductForm={updateProductForm} />
           </Step>
         </StepView>
-        <Button type="button" noBackground noShadow onClick={handleReset}>Reset</Button>
+        <Button type="button" noBackground noShadow onClick={handleReset}>Formular Zurücksetzen</Button>
       </form>
     </>
   );

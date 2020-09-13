@@ -1,0 +1,47 @@
+.name-view{
+    min-width: 200px;
+    width: 50%;
+}
+
+.name-view *{
+    width: 100%;
+}
+
+.part-view{
+}
+
+.new-part-container, .new-size-container{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.new-part, .new-size{
+    max-width: 600px;
+    width: 100%;
+}
+
+.part-view h3, .size-view h3{
+    margin-top: 0;
+}
+
+.new-part-form, .new-size-form{
+    display: grid;
+    gap: var(--margin);
+}
+
+.new-size-container > *{
+    margin-bottom: var(--margin);
+}
+
+.new-size-container .new-size{
+    margin-bottom: 0;
+}
+
+.size-view{}
+
+.size-view .part{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--margin);
+}

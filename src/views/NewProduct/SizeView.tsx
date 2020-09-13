@@ -5,8 +5,10 @@ import { reduxProps } from '.';
 
 import Grid, { GridItem } from '../../components/Grid';
 import Button from '../../components/Button';
-import { CardWithTitle } from '../../components/Card';
+import Card, { CardBody, CardWithTitle } from '../../components/Card';
 import InputField from '../../components/InputField';
+
+import styles from './NewProduct.module.css';
 
 interface ISizeView{
   currentProduct: IProduct
@@ -46,46 +48,47 @@ export default function SizeView({ currentProduct, updateProductForm }: ISizeVie
   };
 
   // TODO: Add size delete button.
+  // TODO: Add size edit button.
   return (
-    <>
+    <section className={styles['size-view']}>
       {
         currentProduct?.sizes
         // @ts-ignore
         && Object.entries(currentProduct?.sizes).map(([key]) => <CardWithTitle title={key} />)
       }
-      {inputVisible ? (
-        <form onSubmit={handleSizeSubmit}>
-          <Grid column>
-            <GridItem>
-              <InputField
-                type="text"
-                name="size"
-                placeholder="Größe"
-                required
-              />
-            </GridItem>
-            {currentProduct?.parts && (
-              <GridItem>
-                {currentProduct?.parts.map((ele) => (
-                  <Grid>
-                    <GridItem>
-                      <InputField required type="text" name={`${ele}-width`} placeholder={`${ele} Width`} />
-                    </GridItem>
-                    <GridItem>
-                      <InputField required type="text" name={`${ele}-height`} placeholder={`${ele} Height`} />
-                    </GridItem>
-                  </Grid>
-                ))}
-              </GridItem>
-                )}
-            <GridItem>
-              <Button type="submit">Hinzufügen</Button>
-            </GridItem>
-          </Grid>
-        </form>
-      )
-        : <Button onClick={() => setInputVisible(true)}>Größe Hinzufügen</Button>}
-      <Button type="submit">Submit</Button>
-    </>
+      <div className={styles['new-size-container']}>
+        {inputVisible ? (
+          <div className={styles['new-size']}>
+            <form onSubmit={handleSizeSubmit}>
+              <Card>
+                <CardBody>
+                  <h3>Erstelle eine neue Größe</h3>
+                  <div className={styles['new-size-form']}>
+                    <InputField
+                      type="text"
+                      name="size"
+                      placeholder="Größe"
+                      label="Größe"
+                      required
+                    />
+                    {currentProduct?.parts && (
+                      currentProduct?.parts.map((ele) => (
+                        <div className={styles.part}>
+                          <InputField required type="text" name={`${ele}-width`} label={`${ele} Breite`} placeholder={`${ele} Width`} />
+                          <InputField required type="text" name={`${ele}-height`} label={`${ele} Länge`} placeholder={`${ele} Height`} />
+                        </div>
+                      ))
+                    )}
+                    <Button type="submit">Hinzufügen</Button>
+                  </div>
+                </CardBody>
+              </Card>
+            </form>
+          </div>
+        )
+          : <Button onClick={() => setInputVisible(true)}>Größe Hinzufügen</Button>}
+        <Button type="submit">Produkt Speichern</Button>
+      </div>
+    </section>
   );
 }
