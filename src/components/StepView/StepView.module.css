@@ -5,6 +5,7 @@
     align-items: flex-start;
     padding: var(--padding);
     box-sizing: border-box;
+    margin-bottom: var(--margin);
 }
 
 .progressbar__bar{
@@ -55,7 +56,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: var(--margin);
+    margin: var(--margin) 0;
 }
 
 .buttons .forward{

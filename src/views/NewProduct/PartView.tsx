@@ -4,8 +4,10 @@ import { IProduct } from '../../interfaces/product';
 import { reduxProps } from '.';
 
 import Button from '../../components/Button';
-import { CardWithTitle } from '../../components/Card';
+import Card, { CardBody, CardWithTitle } from '../../components/Card';
 import InputField from '../../components/InputField';
+
+import styles from './NewProduct.module.css';
 
 interface IPartView{
   currentProduct: IProduct
@@ -36,25 +38,34 @@ export default function PartView({
 
   // TODO: Add part delete button.
   return (
-    <>
+    <section className={styles['part-view']}>
       {
       currentProduct.parts
       && currentProduct.parts.map((ele, i) => ((i < currPartIndex) ? (<CardWithTitle title={ele} />)
         : null))
       }
-      {inputVisible ? (
-        <>
-          <InputField
-            type="text"
-            name="part"
-            placeholder="Teil"
-            required
-            value={currentProduct?.parts[currPartIndex] ?? ''}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handlePartsChange(e)}
-          />
-          <Button onClick={handleAddButton}>Hinzufügen</Button>
-        </>
-      ) : <Button onClick={() => setInputVisible(true)}>Teil Hinzufügen</Button>}
-    </>
+      <div className={styles['new-part-container']}>
+        {inputVisible ? (
+          <div className={styles['new-part']}>
+            <Card>
+              <CardBody>
+                <h3>Füge Ein neues Teil hinzu</h3>
+                <div className={styles['new-part-form']}>
+                  <InputField
+                    type="text"
+                    name="part"
+                    placeholder="Teil"
+                    required
+                    value={currentProduct?.parts[currPartIndex] ?? ''}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => handlePartsChange(e)}
+                  />
+                  <Button onClick={handleAddButton}>Hinzufügen</Button>
+                </div>
+              </CardBody>
+            </Card>
+          </div>
+        ) : <Button onClick={() => setInputVisible(true)}>Teil Hinzufügen</Button>}
+      </div>
+    </section>
   );
 }

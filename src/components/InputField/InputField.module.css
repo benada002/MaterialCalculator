@@ -1,6 +1,14 @@
+.input-container{
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+}
+
 .input-field{
+    box-sizing: border-box;
     border: 1px solid #e2e2e2;
     border-radius: var(--radius);
     padding: var(--padding-s) var(--padding);
     font-size: var(--font-size);
+    max-width: 100%;
 }
