@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { useHistory } from 'react-router-dom';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import Grid, { GridItem } from 'src/components/Grid';
+import Grid, { GridItem } from '../components/Grid';
 import { addMaterial, updateMaterial } from '../store/actions/materials';
 import { addDBItem, updateDBItem } from '../store/actions/asyncActions';
 import { IFormValues } from '../interfaces/form';
