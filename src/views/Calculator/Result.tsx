@@ -22,7 +22,7 @@ export default function Result({
           // @ts-ignore
           currProduct.sizes && Object.entries(currProduct.sizes).map(
             // @ts-ignore
-            ([size], i) => {
+            ([size]) => {
               let sum = 0;
 
               return (
@@ -36,7 +36,7 @@ export default function Result({
                     <div>
                       {
                         // @ts-ignore
-                      currProduct.parts && currProduct.parts.map((part) => {
+                      currProduct.parts && currProduct.parts.map((part, i) => {
                         const currSum = (currMaterials[i].price / ((currMaterials[i].width / 100) * (currMaterials[i].fLength / 100)))
                           * ((currProduct.sizes[size as any][part].height / 100) * (currProduct.sizes[size as any][part].width / 100));
 

@@ -4,7 +4,6 @@ import React, {
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { addProduct, updateProduct } from '../../store/actions/products';
 import { addDBItem, updateDBItem } from '../../store/actions/asyncActions';
 import { IFormValues } from '../../interfaces/form';

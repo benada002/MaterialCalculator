@@ -49,7 +49,7 @@ export default function PartView({
           <div className={styles['new-part']}>
             <Card>
               <CardBody>
-                <h3>Füge Ein neues Produkt hinzu</h3>
+                <h3>Füge Ein neues Teil hinzu</h3>
                 <div className={styles['new-part-form']}>
                   <InputField
                     type="text"

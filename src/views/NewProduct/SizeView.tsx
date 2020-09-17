@@ -3,7 +3,6 @@ import React, { useState, FormEvent } from 'react';
 import { IProduct } from '../../interfaces/product';
 import { reduxProps } from '.';
 
-import Grid, { GridItem } from '../../components/Grid';
 import Button from '../../components/Button';
 import Card, { CardBody, CardWithTitle } from '../../components/Card';
 import InputField from '../../components/InputField';
